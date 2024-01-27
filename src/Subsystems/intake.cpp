@@ -15,7 +15,7 @@ void Intake::toggleIntake(Controller& controller){
     
     if(currentStateIn != previousStateIn){
         if(currentStateIn){
-            intakeIn != intakeIn;
+            intakeIn = !intakeIn;
             intakeOut = false;
         }
         previousStateIn = currentStateIn;
@@ -23,7 +23,7 @@ void Intake::toggleIntake(Controller& controller){
 
     if(currentStateOut != previousStateOut){
         if(currentStateOut){
-            intakeOut != intakeOut;
+            intakeOut = !intakeOut;
             intakeIn = false;
         }
         previousStateOut = currentStateOut;
