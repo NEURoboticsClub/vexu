@@ -123,7 +123,7 @@ void opcontrol() {
 	while (true) {
 		
 		//xModel->xArcade(controller.getAnalog(ControllerAnalog::leftX), controller.getAnalog(ControllerAnalog::leftY),controller.getAnalog(ControllerAnalog::rightX), 0.05);
-
+		drivebase.xDrive(controller);
 		intake.toggleIntake(controller);
 
 	}
