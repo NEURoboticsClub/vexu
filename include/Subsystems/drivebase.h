@@ -14,9 +14,12 @@ class Drivebase
     public:
         Drivebase();
         void xDrive(Controller& controller);
-    private:
+        void generatePath(std::initializer_list<okapi::PathfinderPoint> wayPoints, std::string pathID);
+        void setTarget(std::string pathID);
         std::shared_ptr<OdomChassisController> chassisGeneric;
+    private:
         std::shared_ptr<XDriveModel> chassisXDrive;
+        std::shared_ptr<AsyncMotionProfileController> profileController;
 
 };
 
