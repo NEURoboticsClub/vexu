@@ -13,9 +13,10 @@ class Drivebase
 {
     public:
         Drivebase();
-        void xDrive(double irightSpeed, double iforwardSpeed, double iyaw, double ithreshold = 0);
+        void xDrive(Controller& controller);
     private:
-        std::shared_ptr<OdomChassisController> chassis;
+        std::shared_ptr<OdomChassisController> chassisGeneric;
+        std::shared_ptr<XDriveModel> chassisXDrive;
 
 };
 

@@ -7,7 +7,7 @@ Drivebase::Drivebase(){
     MotorGroup motorsBackLeft = {11, -12};
 
 
-    chassis = 
+    chassisGeneric = 
         ChassisControllerBuilder()
             .withMotors(motorsFrontLeft, motorsFrontRight, motorsBackRight, motorsBackLeft)
             .withSensors(
@@ -23,8 +23,11 @@ Drivebase::Drivebase(){
             .withDimensions(AbstractMotor::gearset::blue, ChassisScales{{2.75_in, 10.5_in, 5.46_in, 2.75_in}, imev5BlueTPR})
             .withOdometry({{2.75_in, 10.5_in, 5.46_in, 2.75_in}, 360})
             .buildOdometry();
+
+    std::shared_ptr<XDriveModel> chassisXDrive = std::dynamic_pointer_cast<XDriveModel>(chassisGeneric->getModel());
+    
 }
 
-void Drivebase::xDrive(double irightSpeed, double iforwardSpeed, double iyaw, double ithreshold = 0){
-    //chassis->getModel()->xArcade()
+void Drivebase::xDrive(Controller& controller){
+    chassisXDrive->xArcade(controller.getAnalog(ControllerAnalog::leftX), controller.getAnalog(ControllerAnalog::leftY),controller.getAnalog(ControllerAnalog::rightX), 0.01);
 }
