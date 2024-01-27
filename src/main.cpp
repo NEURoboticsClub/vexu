@@ -1,6 +1,4 @@
 #include "main.h"
-
-#include "Subsystems/intake.h"
 /**
  * A callback function for LLEMU's center button.
  *
@@ -97,6 +95,7 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+	/*
 	std::shared_ptr<OdomChassisController> drive =
 		ChassisControllerBuilder()
 				.withMotors({2,-3},{4,-5},{17,-18},{11,-12})
@@ -116,17 +115,14 @@ void opcontrol() {
 
 		std::shared_ptr<XDriveModel> xModel = std::dynamic_pointer_cast<XDriveModel>(drive->getModel());
 
-		Controller controller;
 		Motor intakeMotor(20);
 		drive->setMaxVelocity(400);
-	bool moveOut = 0;
-	bool moveIn = 0;
-	Intake intake;
+	*/
+	Controller controller;
 
 	while (true) {
 		
-		xModel->xArcade(controller.getAnalog(ControllerAnalog::leftX), controller.getAnalog(ControllerAnalog::leftY),controller.getAnalog(ControllerAnalog::rightX), 0.05);
-
+		//xModel->xArcade(controller.getAnalog(ControllerAnalog::leftX), controller.getAnalog(ControllerAnalog::leftY),controller.getAnalog(ControllerAnalog::rightX), 0.05);
 
 		intake.toggleIntake(controller);
 
