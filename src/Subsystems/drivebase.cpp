@@ -24,7 +24,7 @@ Drivebase::Drivebase(){
             .withOdometry({{2.75_in, 10.5_in, 5.46_in, 2.75_in}, 360})
             .buildOdometry();
     
-    std::shared_ptr<XDriveModel> chassisXDrive = std::dynamic_pointer_cast<XDriveModel>(chassisGeneric->getModel());
+    chassisXDrive = std::dynamic_pointer_cast<XDriveModel>(chassisGeneric->getModel());
 
     profileController =
         okapi::AsyncMotionProfileControllerBuilder()
