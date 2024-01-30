@@ -1,5 +1,4 @@
 #include "main.h"
-#include "ARMS/config.h"
 /**
  * A callback function for LLEMU's center button.
  *
@@ -23,7 +22,7 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	arms::init()
+	// arms::init();
 }
 
 /**
@@ -56,6 +55,29 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
+	std::shared_ptr<OdomChassisController> odomchas =
+		ChassisControllerBuilder()
+				.withMotors({2,-3},{4,-5},{17,-18},{11,-12})
+				.withSensors(
+					RotationSensor{7, true}, // left encoder in ADI ports A & B
+					RotationSensor{8, true},  // right encoder in ADI ports C & D (reversed)
+					RotationSensor{19}  // middle encoder in ADI ports E & F
+				)
+				.withGains(
+					{0.00035, 0.00005, 0}, // Distance controller gains
+					{0.0006, 0.0000, 0}, // Turn controller gains
+					{0.0004, 0.0000, 0.00000}  // Angle controller gains (helps drive straight)
+				 	)
+				.withDimensions(AbstractMotor::gearset::blue, {{4_in, 10.5_in}, imev5BlueTPR})
+				.withOdometry({{2.75_in, 10.5_in, 5.46_in, 2.75_in}, 360})
+				.buildOdometry();
+
+		// std::shared_ptr<XDriveModel> xModel = std::dynamic_pointer_cast<XDriveModel>(odomchas->getModel());
+	odomchas->setMaxVelocity(550);
+	odomchas->setState({0_m,0_m,0_deg});
+	odomchas->driveToPoint({2_ft, 0_ft}, false);
+	//odomchas->turnAngle(360_deg);
+	// odomchas->driveToPoint({0_m, 1_m}, true);
 	
 }
 
@@ -73,29 +95,35 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-	std::shared_ptr<ChassisController> drive = 
+	/*
+	std::shared_ptr<OdomChassisController> drive =
 		ChassisControllerBuilder()
-			.withMotors({2,-3},{4,-5},{17,-18},{11,-12})
-			.withDimensions(AbstractMotor::gearset::green, {{4_in, 11.5_in}, imev5GreenTPR})
-			.build();
+				.withMotors({2,-3},{4,-5},{17,-18},{11,-12})
+				.withSensors(
+					RotationSensor{7, true}, // left encoder in ADI ports A & B
+					RotationSensor{8, true},  // right encoder in ADI ports C & D (reversed)
+					RotationSensor{19}  // middle encoder in ADI ports E & F
+				)
+				.withGains(
+					{0.00035, 0.00005, 0}, // Distance controller gains
+					{0.0006, 0.0000, 0}, // Turn controller gains
+					{0.0004, 0.0000, 0.00000}  // Angle controller gains (helps drive straight)
+				 	)
+				.withDimensions(AbstractMotor::gearset::blue, {{4_in, 10.5_in}, imev5BlueTPR})
+				.withOdometry({{2.75_in, 10.5_in, 5.46_in, 2.75_in}, 360})
+				.buildOdometry();
 
 		std::shared_ptr<XDriveModel> xModel = std::dynamic_pointer_cast<XDriveModel>(drive->getModel());
 
-		Controller controller;
-		ControllerButton intakeInButton(ControllerDigital::R1);
-		ControllerButton intakeOutButton(ControllerDigital::L1);
-		Motor intakeMotor(15);
-
+		Motor intakeMotor(20);
+		drive->setMaxVelocity(400);
+	*/
+	Controller controller;
 
 	while (true) {
-		xModel->xArcade(controller.getAnalog(ControllerAnalog::leftX), controller.getAnalog(ControllerAnalog::leftY),controller.getAnalog(ControllerAnalog::rightX));
-
-		if (intakeInButton.isPressed()) {
-            intakeMotor.moveVelocity(200);
-        } else if (intakeOutButton.isPressed()) {
-			intakeMotor.moveVelocity(-200);
-        } else {
-			intakeMotor.moveVoltage(0);
-        }
+		
+		//xModel->xArcade(controller.getAnalog(ControllerAnalog::leftX), controller.getAnalog(ControllerAnalog::leftY),controller.getAnalog(ControllerAnalog::rightX), 0.05);
+		drivebase.xDrive(controller);
+		intake.toggleIntake(controller);
 	}
 }
