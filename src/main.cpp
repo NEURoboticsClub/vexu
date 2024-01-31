@@ -1,19 +1,4 @@
 #include "main.h"
-/**
- * A callback function for LLEMU's center button.
- *
- * When this callback is fired, it will toggle line 2 of the LCD text between
- * "I was pressed!" and nothing.
- */
-void on_center_button() {
-	static bool pressed = false;
-	pressed = !pressed;
-	if (pressed) {
-		pros::lcd::set_text(2, "I was pressed!");
-	} else {
-		pros::lcd::clear_line(2);
-	}
-}
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -21,9 +6,7 @@ void on_center_button() {
  * All other competition modes are blocked by initialize; it is recommended
  * to keep execution time for this mode under a few seconds.
  */
-void initialize() {
-	// arms::init();
-}
+void initialize() {}
 
 /**
  * Runs while the robot is in the disabled state of Field Management System or
@@ -55,30 +38,8 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	std::shared_ptr<OdomChassisController> odomchas =
-		ChassisControllerBuilder()
-				.withMotors({2,-3},{4,-5},{17,-18},{11,-12})
-				.withSensors(
-					RotationSensor{7, true}, // left encoder in ADI ports A & B
-					RotationSensor{8, true},  // right encoder in ADI ports C & D (reversed)
-					RotationSensor{19}  // middle encoder in ADI ports E & F
-				)
-				.withGains(
-					{0.00035, 0.00005, 0}, // Distance controller gains
-					{0.0006, 0.0000, 0}, // Turn controller gains
-					{0.0004, 0.0000, 0.00000}  // Angle controller gains (helps drive straight)
-				 	)
-				.withDimensions(AbstractMotor::gearset::blue, {{4_in, 10.5_in}, imev5BlueTPR})
-				.withOdometry({{2.75_in, 10.5_in, 5.46_in, 2.75_in}, 360})
-				.buildOdometry();
-
-		// std::shared_ptr<XDriveModel> xModel = std::dynamic_pointer_cast<XDriveModel>(odomchas->getModel());
-	odomchas->setMaxVelocity(550);
-	odomchas->setState({0_m,0_m,0_deg});
-	odomchas->driveToPoint({2_ft, 0_ft}, false);
-	//odomchas->turnAngle(360_deg);
-	// odomchas->driveToPoint({0_m, 1_m}, true);
-	
+	drivebase.init();
+	drivebase.turnAngle(180_deg);
 }
 
 /**
@@ -95,34 +56,10 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-	/*
-	std::shared_ptr<OdomChassisController> drive =
-		ChassisControllerBuilder()
-				.withMotors({2,-3},{4,-5},{17,-18},{11,-12})
-				.withSensors(
-					RotationSensor{7, true}, // left encoder in ADI ports A & B
-					RotationSensor{8, true},  // right encoder in ADI ports C & D (reversed)
-					RotationSensor{19}  // middle encoder in ADI ports E & F
-				)
-				.withGains(
-					{0.00035, 0.00005, 0}, // Distance controller gains
-					{0.0006, 0.0000, 0}, // Turn controller gains
-					{0.0004, 0.0000, 0.00000}  // Angle controller gains (helps drive straight)
-				 	)
-				.withDimensions(AbstractMotor::gearset::blue, {{4_in, 10.5_in}, imev5BlueTPR})
-				.withOdometry({{2.75_in, 10.5_in, 5.46_in, 2.75_in}, 360})
-				.buildOdometry();
-
-		std::shared_ptr<XDriveModel> xModel = std::dynamic_pointer_cast<XDriveModel>(drive->getModel());
-
-		Motor intakeMotor(20);
-		drive->setMaxVelocity(400);
-	*/
 	Controller controller;
+	drivebase.init();
 
 	while (true) {
-		
-		//xModel->xArcade(controller.getAnalog(ControllerAnalog::leftX), controller.getAnalog(ControllerAnalog::leftY),controller.getAnalog(ControllerAnalog::rightX), 0.05);
 		drivebase.xDrive(controller);
 		intake.toggleIntake(controller);
 	}
