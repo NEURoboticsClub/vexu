@@ -16,6 +16,11 @@ class Drivebase
         void xDrive(Controller& controller);
         void generatePath(std::initializer_list<okapi::PathfinderPoint> wayPoints, std::string pathID);
         void setTarget(std::string pathID);
+        void removePath(std::string pathID);
+        void waitUntilSettled();
+        void driveToPoint(okapi::Point point);
+        void turnAngle(okapi::QAngle angle);
+        void moveDistance(okapi::QLength distance);
         std::shared_ptr<OdomChassisController> chassisGeneric;
     private:
         std::shared_ptr<XDriveModel> chassisXDrive;

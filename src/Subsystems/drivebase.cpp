@@ -16,9 +16,9 @@ Drivebase::Drivebase(){
 				RotationSensor{19}  // middle encoder in ADI ports E & F
                 )
             .withGains(
-				{0.00035, 0.00005, 0}, // Distance controller gains
+				{0.0005, 0.0002, 0}, // Distance controller gains
 				{0.0006, 0.0000, 0}, // Turn controller gains
-				{0.0004, 0.0000, 0.00000}  // Angle controller gains (helps drive straight)
+				{0.0005, 0.0001, 0.00000}  // Angle controller gains (helps drive straight)
 				)
             .withDimensions(AbstractMotor::gearset::blue, ChassisScales{{2.75_in, 10.5_in, 5.46_in, 2.75_in}, imev5BlueTPR})
             .withOdometry({{2.75_in, 10.5_in, 5.46_in, 2.75_in}, 360})
@@ -28,9 +28,13 @@ Drivebase::Drivebase(){
 
     profileController =
         okapi::AsyncMotionProfileControllerBuilder()
-            .withLimits({1.0*0.6, 2.0*0.6, 10.0*0.6})
+            .withLimits({1.0*0.1, 2.0*0.1, 10.0*0.1})
             .withOutput(chassisGeneric)
             .buildMotionProfileController();
+
+    chassisXDrive->setMaxVelocity(400);
+    chassisGeneric->setMaxVelocity(200);
+    chassisGeneric->setState({0_m, 0_m, 0_deg});
     
 }
 
@@ -44,4 +48,24 @@ void Drivebase::generatePath(std::initializer_list<okapi::PathfinderPoint> wayPo
 
 void Drivebase::setTarget(std::string pathID){
     profileController->setTarget(pathID);
+}
+
+void Drivebase::removePath(std::string pathID){
+    profileController->removePath(pathID);
+}
+
+void Drivebase::waitUntilSettled(){
+    profileController->waitUntilSettled();
+}
+
+void Drivebase::driveToPoint(okapi::Point point){
+    chassisGeneric->driveToPoint(point);
+}
+
+void Drivebase::turnAngle(okapi::QAngle angle){
+    chassisGeneric->turnAngle(angle);
+}
+
+void Drivebase::moveDistance(okapi::QLength distance){
+    chassisGeneric->moveDistance(distance);
 }
