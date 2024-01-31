@@ -5,20 +5,24 @@ Drivebase::Drivebase(){
     MotorGroup motorsFrontRight = {4, -5};
     MotorGroup motorsBackRight = {17, -18};
     MotorGroup motorsBackLeft = {11, -12};
+    motorsFrontLeft.setBrakeMode(AbstractMotor::brakeMode::brake);
+    motorsFrontRight.setBrakeMode(AbstractMotor::brakeMode::brake);
+    motorsBackRight.setBrakeMode(AbstractMotor::brakeMode::brake);
+    motorsBackLeft.setBrakeMode(AbstractMotor::brakeMode::brake);
 
 
     chassisGeneric = 
         ChassisControllerBuilder()
             .withMotors(motorsFrontLeft, motorsFrontRight, motorsBackRight, motorsBackLeft)
             .withSensors(
-                RotationSensor{7, true}, // left encoder in ADI ports A & B
-				RotationSensor{8, true},  // right encoder in ADI ports C & D (reversed)
-				RotationSensor{19}  // middle encoder in ADI ports E & F
+                RotationSensor{7, true},
+				RotationSensor{8, true},
+				RotationSensor{19}
                 )
             .withGains(
-				{0.0005, 0.0002, 0}, // Distance controller gains
-				{0.0006, 0.0000, 0}, // Turn controller gains
-				{0.0005, 0.0001, 0.00000}  // Angle controller gains (helps drive straight)
+				{0.0015, 0.000175, 0.0001}, // NOBODY TOUCHES THE PID VALUES
+				{0.003, 0.0001, 0.0001}, // NOBODY TOUCHES THE PID VALUES
+				{0.0015, 0.0001, 0.00005}  // NOBODY TOUCHES THE PID VALUES
 				)
             .withDimensions(AbstractMotor::gearset::blue, ChassisScales{{2.75_in, 10.5_in, 5.46_in, 2.75_in}, imev5BlueTPR})
             .withOdometry({{2.75_in, 10.5_in, 5.46_in, 2.75_in}, 360})
@@ -28,18 +32,21 @@ Drivebase::Drivebase(){
 
     profileController =
         okapi::AsyncMotionProfileControllerBuilder()
-            .withLimits({1.0*0.1, 2.0*0.1, 10.0*0.1})
+            .withLimits({1.0*0.5, 2.0*0.5, 10.0*0.5})
             .withOutput(chassisGeneric)
             .buildMotionProfileController();
-
-    chassisXDrive->setMaxVelocity(400);
-    chassisGeneric->setMaxVelocity(200);
-    chassisGeneric->setState({0_m, 0_m, 0_deg});
     
 }
 
 void Drivebase::xDrive(Controller& controller){
     chassisXDrive->xArcade(controller.getAnalog(ControllerAnalog::leftX), controller.getAnalog(ControllerAnalog::leftY),controller.getAnalog(ControllerAnalog::rightX), 0.01);
+}
+
+void Drivebase::init() {
+    chassisXDrive->setMaxVelocity(400);
+    chassisGeneric->setMaxVelocity(200);
+    chassisGeneric->setState({0_m, 0_m, 0_deg});
+    profileController->reset();
 }
 
 void Drivebase::generatePath(std::initializer_list<okapi::PathfinderPoint> wayPoints, std::string pathID){
@@ -60,6 +67,10 @@ void Drivebase::waitUntilSettled(){
 
 void Drivebase::driveToPoint(okapi::Point point){
     chassisGeneric->driveToPoint(point);
+}
+
+void Drivebase::turnToAngle(okapi::QAngle angle){
+    chassisGeneric->turnToAngle(angle);
 }
 
 void Drivebase::turnAngle(okapi::QAngle angle){

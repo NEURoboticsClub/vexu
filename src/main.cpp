@@ -1,19 +1,4 @@
 #include "main.h"
-/**
- * A callback function for LLEMU's center button.
- *
- * When this callback is fired, it will toggle line 2 of the LCD text between
- * "I was pressed!" and nothing.
- */
-void on_center_button() {
-	static bool pressed = false;
-	pressed = !pressed;
-	if (pressed) {
-		pros::lcd::set_text(2, "I was pressed!");
-	} else {
-		pros::lcd::clear_line(2);
-	}
-}
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -21,9 +6,7 @@ void on_center_button() {
  * All other competition modes are blocked by initialize; it is recommended
  * to keep execution time for this mode under a few seconds.
  */
-void initialize() {
-	// arms::init();
-}
+void initialize() {}
 
 /**
  * Runs while the robot is in the disabled state of Field Management System or
@@ -55,10 +38,8 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	drivebase.generatePath({{1_ft, 1_ft, 90_deg}}, "A");
-	drivebase.setTarget("A");
-	drivebase.waitUntilSettled();
-	drivebase.removePath("A");
+	drivebase.init();
+	drivebase.turnAngle(180_deg);
 }
 
 /**
@@ -76,10 +57,9 @@ void autonomous() {
  */
 void opcontrol() {
 	Controller controller;
+	drivebase.init();
 
 	while (true) {
-		
-		//xModel->xArcade(controller.getAnalog(ControllerAnalog::leftX), controller.getAnalog(ControllerAnalog::leftY),controller.getAnalog(ControllerAnalog::rightX), 0.05);
 		drivebase.xDrive(controller);
 		intake.toggleIntake(controller);
 	}
