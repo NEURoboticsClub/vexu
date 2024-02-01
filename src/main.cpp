@@ -42,13 +42,20 @@ void autonomous() {
 	intake.stop();
 	intake.in();
 	drivebase.moveDistance({12_in});
+	pros::delay(250);
+	intake.stop();
+	drivebase.moveDistance({34_in});
+	drivebase.turnAngle(-95_deg);
+	drivebase.moveDistance({-6_in});
+	drivebase.driveForward(-50);
 	pros::delay(1000);
-	drivebase.moveDistance({36_in});
-	drivebase.turnAngle(-90_deg);
-	drivebase.moveDistance({48_in});
-	drivebase.turnAngle(90_deg);
-	drivebase.moveDistance({12_in});
+	drivebase.moveDistance({46_in});
+	drivebase.turnAngle(100_deg);
+	drivebase.moveDistance(3_in);
 	intake.out();
+	pros::delay(1000);
+	intake.stop();
+	
 
 
 }

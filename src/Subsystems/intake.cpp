@@ -7,6 +7,7 @@ Intake::Intake(){
     currentStateOut = false;
     intakeIn = false;
     intakeOut = false;
+    intakeMotor.setBrakeMode(AbstractMotor::brakeMode::hold);
 }
 
 void Intake::toggleIntake(Controller& controller){

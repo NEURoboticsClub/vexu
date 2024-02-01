@@ -23,6 +23,7 @@ class Drivebase
         void turnToAngle(okapi::QAngle angle);
         void turnAngle(okapi::QAngle angle);
         void moveDistance(okapi::QLength distance);
+        void driveForward(double speed);
         std::shared_ptr<OdomChassisController> chassisGeneric;
     private:
         std::shared_ptr<XDriveModel> chassisXDrive;

@@ -44,7 +44,7 @@ void Drivebase::xDrive(Controller& controller){
 
 void Drivebase::init() {
     chassisXDrive->setMaxVelocity(400);
-    chassisGeneric->setMaxVelocity(200);
+    chassisGeneric->setMaxVelocity(100);
     chassisGeneric->setState({0_m, 0_m, 0_deg});
     profileController->reset();
 }
@@ -79,4 +79,8 @@ void Drivebase::turnAngle(okapi::QAngle angle){
 
 void Drivebase::moveDistance(okapi::QLength distance){
     chassisGeneric->moveDistance(distance);
+}
+
+void Drivebase::driveForward(double speed){
+    chassisXDrive->forward(speed);
 }
