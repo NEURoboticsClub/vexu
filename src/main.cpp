@@ -42,15 +42,15 @@ void autonomous() {
 	intake.stop();
 	intake.in();
 	drivebase.moveDistance({12_in});
-	pros::delay(250);
-	intake.stop();
-	drivebase.moveDistance({34_in});
-	intake.in();
+	pros::delay(300);
+	// intake.stop();
+	drivebase.moveDistance({38_in});
+	// intake.in();
 	drivebase.turnAngle(-95_deg);
-	drivebase.moveDistance({-6_in});
+	// drivebase.moveDistance({-6_in});
 	drivebase.driveForward(-50);
 	intake.stop();
-	pros::delay(500);
+	pros::delay(750);
 	drivebase.moveDistance({46_in});
 	
 	intake.in();
@@ -59,27 +59,38 @@ void autonomous() {
 
 	drivebase.moveDistance(3_in);
 	intake.out();
-	pros::delay(250);
 	drivebase.driveForward(200);
-	pros::delay(250);
+	pros::delay(400);
 	intake.stop();
-	drivebase.turnAngle({0_deg});
-	drivebase.moveDistance({-9_in});
+
+	drivebase.moveDistance({-17_in});
 	drivebase.turnAngle({-95_deg});
 	intake.in();
 	drivebase.moveDistance({12_in});
 	pros::delay(100);
-	drivebase.moveDistance({-6_in});
-	pros::delay(250);
+	drivebase.moveDistance({-11_in});
 	drivebase.turnAngle(100_deg);
-	intake.stop();
-	drivebase.moveDistance({8_in});
+	drivebase.moveDistance({12_in});
 	intake.out();
-	pros::delay(250);
-	drivebase.driveForward(200);
-	pros::delay(250);
-	intake.stop();
+	drivebase.driveForward(250);
+	pros::delay(400);
 	
+
+	drivebase.moveDistance({-12_in});
+	drivebase.turnAngle({-195_deg});
+	intake.in();
+	drivebase.moveDistance({18_in});
+	intake.stop();
+	drivebase.moveDistance({-18_in});
+	drivebase.turnAngle({197_deg});
+	drivebase.moveDistance({10_in});
+	intake.out();
+	drivebase.driveForward(250);
+	pros::delay(400);
+	intake.stop();
+	drivebase.driveForward(0);
+	drivebase.turnAngle({143_deg});
+	drivebase.moveDistance({45_in});
 
 	
 	
@@ -102,11 +113,11 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-	Controller controller;
-	drivebase.init();
+	// drivebase.init();
 
-	while (true) {
-		drivebase.xDrive(controller);
-		intake.toggleIntake(controller);
-	}
+
+	// while (true) {
+	// 	drivebase.xDrive(controller);
+	// 	intake.toggleIntake(controller);
+	// }
 }
