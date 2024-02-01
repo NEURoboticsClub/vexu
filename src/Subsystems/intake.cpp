@@ -45,8 +45,9 @@ void Intake::out(){
     spinIntake();
 }
 
-void Intake::out(){
-    intakeIn = true;
+void Intake::stop(){
+    intakeIn = false;
+    intakeOut = false;
     spinIntake();
 }
 

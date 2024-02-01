@@ -39,7 +39,17 @@ void competition_initialize() {}
  */
 void autonomous() {
 	drivebase.init();
+	intake.stop();
 	drivebase.turnAngle(180_deg);
+	drivebase.moveDistance({12_in});
+	drivebase.moveDistance({48_in});
+	drivebase.turnAngle(-90_deg);
+	drivebase.moveDistance({48_in});
+	drivebase.turnAngle(90_deg);
+	drivebase.moveDistance({12_in});
+	intake.in();
+
+
 }
 
 /**
