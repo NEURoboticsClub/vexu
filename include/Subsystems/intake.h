@@ -14,6 +14,10 @@ class Intake
     public:
         Intake();
         void toggleIntake(Controller& controller);
+        void in();
+        void out();
+        void stop();
+        void spinIntake();
     private:
         Motor intakeMotor = Motor(20, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::rotations);;
         bool previousStateIn;

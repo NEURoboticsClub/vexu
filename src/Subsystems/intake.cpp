@@ -29,7 +29,29 @@ void Intake::toggleIntake(Controller& controller){
         previousStateOut = currentStateOut;
     }
 
-    if(intakeIn){
+   spinIntake();
+}
+
+
+void Intake::in(){
+    intakeIn = true;
+    intakeOut = false;
+    spinIntake();
+}
+
+void Intake::out(){
+    intakeIn = false;
+    intakeOut = true;
+    spinIntake();
+}
+
+void Intake::out(){
+    intakeIn = true;
+    spinIntake();
+}
+
+void Intake::spinIntake(){
+     if(intakeIn){
         intakeMotor.moveVelocity(600);
     }
     else if(intakeOut){
