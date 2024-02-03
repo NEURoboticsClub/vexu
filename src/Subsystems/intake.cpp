@@ -54,10 +54,10 @@ void Intake::stop(){
 
 void Intake::spinIntake(){
      if(intakeIn){
-        intakeMotor.moveVelocity(600);
+        intakeMotor.moveVelocity(300);
     }
     else if(intakeOut){
-        intakeMotor.moveVelocity(-600);
+        intakeMotor.moveVelocity(-300);
     }
     else{
         intakeMotor.moveVelocity(0);

@@ -19,7 +19,7 @@ class Intake
         void stop();
         void spinIntake();
     private:
-        Motor intakeMotor = Motor(20, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::rotations);;
+        Motor intakeMotor = Motor(13, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::rotations);;
         bool previousStateIn;
         bool currentStateIn;
         bool previousStateOut;
