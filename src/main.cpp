@@ -43,11 +43,8 @@ void autonomous() {
 	intake.in();
 	drivebase.moveDistance({12_in});
 	pros::delay(300);
-	// intake.stop();
 	drivebase.moveDistance({38_in});
-	// intake.in();
 	drivebase.turnAngle(-95_deg);
-	// drivebase.moveDistance({-6_in});
 	drivebase.driveForward(-50);
 	intake.stop();
 	pros::delay(750);
@@ -113,11 +110,12 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-	// drivebase.init();
+	drivebase.init();
+	Controller controller;
 
 
-	// while (true) {
-	// 	drivebase.xDrive(controller);
-	// 	intake.toggleIntake(controller);
-	// }
+	while (true) {
+		drivebase.xDrive(controller);
+		intake.toggleIntake(controller);
+	}
 }
