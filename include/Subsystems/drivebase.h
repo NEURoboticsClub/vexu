@@ -26,6 +26,13 @@ class Drivebase
         void driveForward(double speed);
         std::shared_ptr<OdomChassisController> chassisGeneric;
     private:
+        MotorGroup motorsFrontLeft = {2, -3};
+        MotorGroup motorsFrontRight = {4, -5};
+        MotorGroup motorsBackRight = {17, -18};
+        MotorGroup motorsBackLeft = {11, -12};
+        RotationSensor leftSensor = RotationSensor{7, true};
+        RotationSensor rightSensor = RotationSensor{8, true};
+        RotationSensor middleSensor = RotationSensor{19};
         std::shared_ptr<XDriveModel> chassisXDrive;
         std::shared_ptr<AsyncMotionProfileController> profileController;
 

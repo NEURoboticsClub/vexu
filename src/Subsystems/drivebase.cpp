@@ -1,23 +1,18 @@
 #include "Subsystems/drivebase.h"
 
 Drivebase::Drivebase(){
-    MotorGroup motorsFrontLeft = {2, -3};
-    MotorGroup motorsFrontRight = {4, -5};
-    MotorGroup motorsBackRight = {17, -18};
-    MotorGroup motorsBackLeft = {11, -12};
     motorsFrontLeft.setBrakeMode(AbstractMotor::brakeMode::brake);
     motorsFrontRight.setBrakeMode(AbstractMotor::brakeMode::brake);
     motorsBackRight.setBrakeMode(AbstractMotor::brakeMode::brake);
     motorsBackLeft.setBrakeMode(AbstractMotor::brakeMode::brake);
 
-
     chassisGeneric = 
         ChassisControllerBuilder()
             .withMotors(motorsFrontLeft, motorsFrontRight, motorsBackRight, motorsBackLeft)
             .withSensors(
-                RotationSensor{7, true},
-				RotationSensor{8, true},
-				RotationSensor{19}
+                leftSensor,
+                rightSensor,
+                middleSensor
                 )
             .withGains(
 				{0.0015, 0.000175, 0.0001}, // NOBODY TOUCHES THE PID VALUES
